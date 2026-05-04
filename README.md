@@ -106,6 +106,7 @@ export function MyComponent() {
 ## Author
 
 Built With 🍪 by [**Adem Kouki**](https://github.com/Ademking)
+Migrated from Radix-UI to Base-UI by [**Yannik Knops**](https://github.com/ixexel661)
 
 ## Licence
 

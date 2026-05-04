@@ -1,29 +1,28 @@
-"use client";
+"use client"
 
-import type React from "react";
-
-import { useState } from "react";
-import { Cascader, type CascaderOption } from "@/components/ui/cascader";
+import { IconBrandGithub } from "@tabler/icons-react"
 import {
-  MapPin,
   Building2,
-  Waves,
   Cookie,
-  Phone,
-  ToolCase,
-  PersonStanding,
   Footprints,
   Laptop,
-  TruckElectricIcon,
-  Venus,
+  MapPin,
+  PersonStanding,
+  Phone,
   Shirt,
   Smartphone,
-  Github,
-} from "lucide-react";
+  ToolCase,
+  TruckElectricIcon,
+  Venus,
+  Waves,
+} from "lucide-react"
+import type React from "react"
+import { useState } from "react"
+import { Cascader, type CascaderOption } from "@/components/ui/cascader"
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ThemeProvider } from "./components/theme-provider";
-import { CodeBlock } from "./components/ui/code-block";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ThemeProvider } from "./components/theme-provider"
+import { CodeBlock } from "./components/ui/code-block"
 
 const options: CascaderOption[] = [
   {
@@ -54,13 +53,11 @@ const options: CascaderOption[] = [
       {
         value: "lyon",
         label: "Lyon",
-        children: [
-          { value: "basilica_of_fourviere", label: "Basilica of Fourvière" },
-        ],
+        children: [{ value: "basilica_of_fourviere", label: "Basilica of Fourvière" }],
       },
     ],
   },
-];
+]
 
 const disabledOptions: CascaderOption[] = [
   {
@@ -92,7 +89,7 @@ const disabledOptions: CascaderOption[] = [
       },
     ],
   },
-];
+]
 
 const optionsWithIcons: CascaderOption[] = [
   {
@@ -163,7 +160,7 @@ const optionsWithIcons: CascaderOption[] = [
       },
     ],
   },
-];
+]
 
 const demoOptions: CascaderOption[] = [
   {
@@ -323,7 +320,7 @@ const demoOptions: CascaderOption[] = [
       },
     ],
   },
-];
+]
 
 function ExampleCard({
   title,
@@ -331,18 +328,16 @@ function ExampleCard({
   children,
   code,
 }: {
-  title: string;
-  description?: string;
-  children: React.ReactNode;
-  code: string;
+  title: string
+  description?: string
+  children: React.ReactNode
+  code: string
 }) {
   return (
     <div className="space-y-4">
       <div>
         <h3 className="text-lg font-semibold">{title}</h3>
-        {description && (
-          <p className="text-sm text-muted-foreground mt-1">{description}</p>
-        )}
+        {description && <p className="text-sm text-muted-foreground mt-1">{description}</p>}
       </div>
       <Tabs defaultValue="preview" className="w-full">
         <TabsList className="p-0 h-auto bg-background gap-1">
@@ -367,11 +362,11 @@ function ExampleCard({
         </TabsContent>
       </Tabs>
     </div>
-  );
+  )
 }
 
 export default function DocsPage() {
-  const [controlledValue, setControlledValue] = useState<string[]>([]);
+  const [controlledValue, setControlledValue] = useState<string[]>([])
 
   return (
     <ThemeProvider>
@@ -392,14 +387,14 @@ export default function DocsPage() {
                transition-colors duration-150 
                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                <Github className="h-5 w-5" />
+                <IconBrandGithub className="h-5 w-5" />
                 <span>Ademking/cascader-shadcn</span>
               </a>
             </h1>
 
             <p className="text-xl text-muted-foreground">
-              A cascading dropdown menu component for selecting hierarchical
-              data like locations, categories, or organizational structures.
+              A cascading dropdown menu component for selecting hierarchical data like locations,
+              categories, or organizational structures.
             </p>
 
             <p className="text-xs text-muted-foreground italic">
@@ -431,9 +426,7 @@ export default function DocsPage() {
 
           {/* Installation */}
           <section className="py-8 border-b space-y-4">
-            <h2 className="text-2xl font-semibold tracking-tight">
-              Installation
-            </h2>
+            <h2 className="text-2xl font-semibold tracking-tight">Installation</h2>
 
             <Tabs defaultValue="cli" className="w-full">
               <TabsList className="p-0 h-auto bg-background gap-1">
@@ -822,10 +815,7 @@ export function MyComponent() {
                   placeholder="Please select"
                 />
                 <p className="text-sm text-muted-foreground">
-                  Selected:{" "}
-                  {controlledValue.length > 0
-                    ? controlledValue.join(" / ")
-                    : "None"}
+                  Selected: {controlledValue.length > 0 ? controlledValue.join(" / ") : "None"}
                 </p>
               </div>
             </ExampleCard>
@@ -839,11 +829,7 @@ export function MyComponent() {
   placeholder="Hover to expand"
 />`}
             >
-              <Cascader
-                options={options}
-                expandTrigger="hover"
-                placeholder="Hover to expand"
-              />
+              <Cascader options={options} expandTrigger="hover" placeholder="Hover to expand" />
             </ExampleCard>
 
             <ExampleCard
@@ -893,10 +879,7 @@ const options = [
   placeholder="Select with icons"
 />`}
             >
-              <Cascader
-                options={optionsWithIcons}
-                placeholder="Select with icons"
-              />
+              <Cascader options={optionsWithIcons} placeholder="Select with icons" />
             </ExampleCard>
 
             <ExampleCard
@@ -941,10 +924,7 @@ const options = [
 
 <Cascader options={options} placeholder="Some options disabled" />`}
             >
-              <Cascader
-                options={disabledOptions}
-                placeholder="Some options disabled"
-              />
+              <Cascader options={disabledOptions} placeholder="Some options disabled" />
             </ExampleCard>
 
             <ExampleCard
@@ -974,19 +954,13 @@ const options = [
   placeholder="No clear button"
 />`}
             >
-              <Cascader
-                options={options}
-                allowClear={false}
-                placeholder="No clear button"
-              />
+              <Cascader options={options} allowClear={false} placeholder="No clear button" />
             </ExampleCard>
           </section>
 
           {/* API Reference */}
           <section className="py-8 border-t space-y-6">
-            <h2 className="text-2xl font-semibold tracking-tight">
-              API Reference
-            </h2>
+            <h2 className="text-2xl font-semibold tracking-tight">API Reference</h2>
 
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">CascaderOption</h3>
@@ -1002,9 +976,7 @@ const options = [
                   <tbody className="divide-y">
                     <tr>
                       <td className="p-3 font-mono text-xs">value</td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        string
-                      </td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">string</td>
                       <td className="p-3 text-muted-foreground">
                         Unique identifier for the option
                       </td>
@@ -1020,31 +992,22 @@ const options = [
                     </tr>
                     <tr>
                       <td className="p-3 font-mono text-xs">textLabel</td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        string
-                      </td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">string</td>
                       <td className="p-3 text-muted-foreground">
-                        String label for display rendering. Falls back to value
-                        if not provided.
+                        String label for display rendering. Falls back to value if not provided.
                       </td>
                     </tr>
                     <tr>
                       <td className="p-3 font-mono text-xs">disabled</td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        boolean
-                      </td>
-                      <td className="p-3 text-muted-foreground">
-                        Whether the option is disabled
-                      </td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">boolean</td>
+                      <td className="p-3 text-muted-foreground">Whether the option is disabled</td>
                     </tr>
                     <tr>
                       <td className="p-3 font-mono text-xs">children</td>
                       <td className="p-3 font-mono text-xs text-muted-foreground">
                         CascaderOption[]
                       </td>
-                      <td className="p-3 text-muted-foreground">
-                        Nested child options
-                      </td>
+                      <td className="p-3 text-muted-foreground">Nested child options</td>
                     </tr>
                   </tbody>
                 </table>
@@ -1069,132 +1032,78 @@ const options = [
                       <td className="p-3 font-mono text-xs text-muted-foreground">
                         CascaderOption[]
                       </td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        -
-                      </td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">-</td>
                       <td className="p-3 text-muted-foreground">
                         The data options for the cascader
                       </td>
                     </tr>
                     <tr>
                       <td className="p-3 font-mono text-xs">value</td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        string[]
-                      </td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        -
-                      </td>
-                      <td className="p-3 text-muted-foreground">
-                        Controlled selected value
-                      </td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">string[]</td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">-</td>
+                      <td className="p-3 text-muted-foreground">Controlled selected value</td>
                     </tr>
                     <tr>
                       <td className="p-3 font-mono text-xs">defaultValue</td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        string[]
-                      </td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        -
-                      </td>
-                      <td className="p-3 text-muted-foreground">
-                        Initial selected value
-                      </td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">string[]</td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">-</td>
+                      <td className="p-3 text-muted-foreground">Initial selected value</td>
                     </tr>
                     <tr>
                       <td className="p-3 font-mono text-xs">onChange</td>
                       <td className="p-3 font-mono text-xs text-muted-foreground">
                         (value, options) =&gt; void
                       </td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        -
-                      </td>
-                      <td className="p-3 text-muted-foreground">
-                        Callback when selection changes
-                      </td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">-</td>
+                      <td className="p-3 text-muted-foreground">Callback when selection changes</td>
                     </tr>
                     <tr>
                       <td className="p-3 font-mono text-xs">placeholder</td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        string
-                      </td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">string</td>
                       <td className="p-3 font-mono text-xs text-muted-foreground">
                         "Please select"
                       </td>
-                      <td className="p-3 text-muted-foreground">
-                        Placeholder text
-                      </td>
+                      <td className="p-3 text-muted-foreground">Placeholder text</td>
                     </tr>
                     <tr>
                       <td className="p-3 font-mono text-xs">disabled</td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        boolean
-                      </td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        false
-                      </td>
-                      <td className="p-3 text-muted-foreground">
-                        Disable the cascader
-                      </td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">boolean</td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">false</td>
+                      <td className="p-3 text-muted-foreground">Disable the cascader</td>
                     </tr>
                     <tr>
                       <td className="p-3 font-mono text-xs">allowClear</td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        boolean
-                      </td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        true
-                      </td>
-                      <td className="p-3 text-muted-foreground">
-                        Show clear button
-                      </td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">boolean</td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">true</td>
+                      <td className="p-3 text-muted-foreground">Show clear button</td>
                     </tr>
                     <tr>
                       <td className="p-3 font-mono text-xs">expandTrigger</td>
                       <td className="p-3 font-mono text-xs text-muted-foreground">
                         "click" | "hover"
                       </td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        "click"
-                      </td>
-                      <td className="p-3 text-muted-foreground">
-                        How to expand child options
-                      </td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">"click"</td>
+                      <td className="p-3 text-muted-foreground">How to expand child options</td>
                     </tr>
                     <tr>
                       <td className="p-3 font-mono text-xs">displayRender</td>
                       <td className="p-3 font-mono text-xs text-muted-foreground">
                         (labels, options) =&gt; ReactNode
                       </td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        -
-                      </td>
-                      <td className="p-3 text-muted-foreground">
-                        Custom render for display
-                      </td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">-</td>
+                      <td className="p-3 text-muted-foreground">Custom render for display</td>
                     </tr>
                     <tr>
                       <td className="p-3 font-mono text-xs">className</td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        string
-                      </td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        -
-                      </td>
-                      <td className="p-3 text-muted-foreground">
-                        Custom class for trigger
-                      </td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">string</td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">-</td>
+                      <td className="p-3 text-muted-foreground">Custom class for trigger</td>
                     </tr>
                     <tr>
                       <td className="p-3 font-mono text-xs">popupClassName</td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        string
-                      </td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">
-                        -
-                      </td>
-                      <td className="p-3 text-muted-foreground">
-                        Custom class for dropdown
-                      </td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">string</td>
+                      <td className="p-3 font-mono text-xs text-muted-foreground">-</td>
+                      <td className="p-3 text-muted-foreground">Custom class for dropdown</td>
                     </tr>
                   </tbody>
                 </table>
@@ -1206,10 +1115,7 @@ const options = [
           <footer className="pt-8 border-t text-center text-sm text-muted-foreground">
             <p className="flex items-center justify-center gap-1">
               Built with <Cookie className="size-5" /> by{" "}
-              <a
-                className="hover:underline text-gray-300"
-                href="https://github.com/Ademking"
-              >
+              <a className="hover:underline text-gray-300" href="https://github.com/Ademking">
                 Adem Kouki
               </a>
             </p>
@@ -1217,5 +1123,5 @@ const options = [
         </div>
       </main>
     </ThemeProvider>
-  );
+  )
 }

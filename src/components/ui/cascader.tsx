@@ -1,51 +1,44 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { ChevronRight, ChevronDown, X } from "lucide-react";
-import { cn } from "@/lib/utils";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { ChevronDown, ChevronRight, X } from "lucide-react"
+import * as React from "react"
 import {
   Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
-import { useIsMobile } from "@/hooks/use-mobile";
+} from "@/components/ui/drawer"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { useIsMobile } from "@/hooks/use-mobile"
+import { cn } from "@/lib/utils"
 
 export interface CascaderOption {
-  value: string;
-  label: React.ReactNode;
-  textLabel?: string;
-  disabled?: boolean;
-  children?: CascaderOption[];
+  value: string
+  label: React.ReactNode
+  textLabel?: string
+  disabled?: boolean
+  children?: CascaderOption[]
 }
 
 export interface CascaderProps {
-  options: CascaderOption[];
-  value?: string[];
-  defaultValue?: string[];
-  onChange?: (value: string[], selectedOptions: CascaderOption[]) => void;
-  placeholder?: string;
-  disabled?: boolean;
-  allowClear?: boolean;
-  className?: string;
-  popupClassName?: string;
-  expandTrigger?: "click" | "hover";
-  displayRender?: (
-    labels: string[],
-    selectedOptions: CascaderOption[]
-  ) => React.ReactNode;
+  options: CascaderOption[]
+  value?: string[]
+  defaultValue?: string[]
+  onChange?: (value: string[], selectedOptions: CascaderOption[]) => void
+  placeholder?: string
+  disabled?: boolean
+  allowClear?: boolean
+  className?: string
+  popupClassName?: string
+  expandTrigger?: "click" | "hover"
+  displayRender?: (labels: string[], selectedOptions: CascaderOption[]) => React.ReactNode
 }
 
 function getStringLabel(option: CascaderOption): string {
-  if (option.textLabel) return option.textLabel;
-  if (typeof option.label === "string") return option.label;
-  return option.value;
+  if (option.textLabel) return option.textLabel
+  if (typeof option.label === "string") return option.label
+  return option.value
 }
 
 export function Cascader({
@@ -61,113 +54,111 @@ export function Cascader({
   expandTrigger = "click",
   displayRender,
 }: CascaderProps) {
-  const [open, setOpen] = React.useState(false);
-  const [internalValue, setInternalValue] = React.useState<string[]>(
-    defaultValue || []
-  );
-  const [expandedPath, setExpandedPath] = React.useState<string[]>([]);
-  const [focusedColumn, setFocusedColumn] = React.useState(0);
-  const [focusedIndex, setFocusedIndex] = React.useState(0);
-  const isMobile = useIsMobile();
-  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
-  const columnRefs = React.useRef<Map<string, HTMLDivElement>>(new Map());
+  const [open, setOpen] = React.useState(false)
+  const [internalValue, setInternalValue] = React.useState<string[]>(defaultValue || [])
+  const [expandedPath, setExpandedPath] = React.useState<string[]>([])
+  const [focusedColumn, setFocusedColumn] = React.useState(0)
+  const [focusedIndex, setFocusedIndex] = React.useState(0)
+  const isMobile = useIsMobile()
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null)
+  const columnRefs = React.useRef<Map<string, HTMLDivElement>>(new Map())
 
-  const selectedValue = value !== undefined ? value : internalValue;
+  const selectedValue = value !== undefined ? value : internalValue
 
   const getColumns = React.useCallback(() => {
-    const columns: CascaderOption[][] = [options];
-    let currentOptions = options;
+    const columns: CascaderOption[][] = [options]
+    let currentOptions = options
 
     for (const val of expandedPath) {
-      const found = currentOptions.find((opt) => opt.value === val);
+      const found = currentOptions.find((opt) => opt.value === val)
       if (found?.children) {
-        columns.push(found.children);
-        currentOptions = found.children;
+        columns.push(found.children)
+        currentOptions = found.children
       } else {
-        break;
+        break
       }
     }
 
-    return columns;
-  }, [options, expandedPath]);
+    return columns
+  }, [options, expandedPath])
 
   const getSelectedOptions = React.useCallback(
     (vals: string[]): CascaderOption[] => {
-      const result: CascaderOption[] = [];
-      let currentOptions = options;
+      const result: CascaderOption[] = []
+      let currentOptions = options
 
       for (const val of vals) {
-        const found = currentOptions.find((opt) => opt.value === val);
+        const found = currentOptions.find((opt) => opt.value === val)
         if (found) {
-          result.push(found);
-          currentOptions = found.children || [];
+          result.push(found)
+          currentOptions = found.children || []
         } else {
-          break;
+          break
         }
       }
 
-      return result;
+      return result
     },
     [options]
-  );
+  )
 
-  const selectedOptions = getSelectedOptions(selectedValue);
-  const displayLabels = selectedOptions.map((opt) => getStringLabel(opt));
+  const selectedOptions = getSelectedOptions(selectedValue)
+  const displayLabels = selectedOptions.map((opt) => getStringLabel(opt))
 
   const handleSelect = (option: CascaderOption, columnIndex: number) => {
-    if (option.disabled) return;
+    if (option.disabled) return
 
-    const newPath = [...expandedPath.slice(0, columnIndex), option.value];
+    const newPath = [...expandedPath.slice(0, columnIndex), option.value]
 
     if (option.children && option.children.length > 0) {
-      setExpandedPath(newPath);
-      setFocusedColumn(columnIndex + 1);
-      setFocusedIndex(0);
+      setExpandedPath(newPath)
+      setFocusedColumn(columnIndex + 1)
+      setFocusedIndex(0)
       setTimeout(() => {
         if (scrollContainerRef.current) {
           scrollContainerRef.current.scrollTo({
             left: scrollContainerRef.current.scrollWidth,
             behavior: "smooth",
-          });
+          })
         }
-        const key = `${columnIndex + 1}-0`;
-        columnRefs.current.get(key)?.focus();
-      }, 50);
+        const key = `${columnIndex + 1}-0`
+        columnRefs.current.get(key)?.focus()
+      }, 50)
     } else {
-      const newSelectedOptions = getSelectedOptions(newPath);
+      const newSelectedOptions = getSelectedOptions(newPath)
       if (value === undefined) {
-        setInternalValue(newPath);
+        setInternalValue(newPath)
       }
-      onChange?.(newPath, newSelectedOptions);
-      setOpen(false);
-      setExpandedPath([]);
+      onChange?.(newPath, newSelectedOptions)
+      setOpen(false)
+      setExpandedPath([])
     }
-  };
+  }
 
   const handleExpand = (option: CascaderOption, columnIndex: number) => {
-    if (option.disabled) return;
-    const newPath = [...expandedPath.slice(0, columnIndex), option.value];
-    setExpandedPath(newPath);
+    if (option.disabled) return
+    const newPath = [...expandedPath.slice(0, columnIndex), option.value]
+    setExpandedPath(newPath)
     setTimeout(() => {
       if (scrollContainerRef.current) {
         scrollContainerRef.current.scrollTo({
           left: scrollContainerRef.current.scrollWidth,
           behavior: "smooth",
-        });
+        })
       }
-    }, 50);
-  };
+    }, 50)
+  }
 
   const handleClear = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
     if (value === undefined) {
-      setInternalValue([]);
+      setInternalValue([])
     }
-    onChange?.([], []);
-    setExpandedPath([]);
-    setOpen(false);
-  };
+    onChange?.([], [])
+    setExpandedPath([])
+    setOpen(false)
+  }
 
   const handleKeyDown = (
     e: React.KeyboardEvent,
@@ -176,105 +167,93 @@ export function Cascader({
     itemIndex: number,
     columns: CascaderOption[][] // Pass columns as parameter
   ) => {
-    const column = columns[columnIndex]; // Use columns parameter instead of options
-    const hasChildren = option.children && option.children.length > 0;
+    const column = columns[columnIndex] // Use columns parameter instead of options
+    const hasChildren = option.children && option.children.length > 0
 
     switch (e.key) {
       case "ArrowDown":
-        e.preventDefault();
+        e.preventDefault()
         if (itemIndex < column.length - 1) {
-          const nextIndex = itemIndex + 1;
-          setFocusedIndex(nextIndex);
-          const key = `${columnIndex}-${nextIndex}`;
-          columnRefs.current.get(key)?.focus();
+          const nextIndex = itemIndex + 1
+          setFocusedIndex(nextIndex)
+          const key = `${columnIndex}-${nextIndex}`
+          columnRefs.current.get(key)?.focus()
         }
-        break;
+        break
 
       case "ArrowUp":
-        e.preventDefault();
+        e.preventDefault()
         if (itemIndex > 0) {
-          const prevIndex = itemIndex - 1;
-          setFocusedIndex(prevIndex);
-          const key = `${columnIndex}-${prevIndex}`;
-          columnRefs.current.get(key)?.focus();
+          const prevIndex = itemIndex - 1
+          setFocusedIndex(prevIndex)
+          const key = `${columnIndex}-${prevIndex}`
+          columnRefs.current.get(key)?.focus()
         }
-        break;
+        break
 
       case "ArrowRight":
       case "Enter":
-        e.preventDefault();
+        e.preventDefault()
         if (!option.disabled) {
           if (hasChildren) {
-            handleSelect(option, columnIndex);
+            handleSelect(option, columnIndex)
           } else if (e.key === "Enter") {
-            handleSelect(option, columnIndex);
+            handleSelect(option, columnIndex)
           }
         }
-        break;
+        break
 
       case "ArrowLeft":
       case "Backspace":
-        e.preventDefault();
+        e.preventDefault()
         if (columnIndex > 0) {
-          const newPath = expandedPath.slice(0, columnIndex - 1);
-          setExpandedPath(newPath);
-          setFocusedColumn(columnIndex - 1);
-          const parentColumn = columns[columnIndex - 1]; // Use columns parameter
-          const parentValue = expandedPath[columnIndex - 1];
-          const parentIndex = parentColumn.findIndex(
-            (opt) => opt.value === parentValue
-          );
-          setFocusedIndex(parentIndex >= 0 ? parentIndex : 0);
+          const newPath = expandedPath.slice(0, columnIndex - 1)
+          setExpandedPath(newPath)
+          setFocusedColumn(columnIndex - 1)
+          const parentColumn = columns[columnIndex - 1] // Use columns parameter
+          const parentValue = expandedPath[columnIndex - 1]
+          const parentIndex = parentColumn.findIndex((opt) => opt.value === parentValue)
+          setFocusedIndex(parentIndex >= 0 ? parentIndex : 0)
           setTimeout(() => {
-            const key = `${columnIndex - 1}-${
-              parentIndex >= 0 ? parentIndex : 0
-            }`;
-            columnRefs.current.get(key)?.focus();
-          }, 50);
+            const key = `${columnIndex - 1}-${parentIndex >= 0 ? parentIndex : 0}`
+            columnRefs.current.get(key)?.focus()
+          }, 50)
         }
-        break;
+        break
 
       case "Escape":
-        e.preventDefault();
-        setOpen(false);
-        setExpandedPath([]);
-        break;
+        e.preventDefault()
+        setOpen(false)
+        setExpandedPath([])
+        break
 
       case "Tab":
-        if (
-          !e.shiftKey &&
-          hasChildren &&
-          expandedPath[columnIndex] === option.value
-        ) {
-          e.preventDefault();
-          setFocusedColumn(columnIndex + 1);
-          setFocusedIndex(0);
-          const key = `${columnIndex + 1}-0`;
-          columnRefs.current.get(key)?.focus();
+        if (!e.shiftKey && hasChildren && expandedPath[columnIndex] === option.value) {
+          e.preventDefault()
+          setFocusedColumn(columnIndex + 1)
+          setFocusedIndex(0)
+          const key = `${columnIndex + 1}-0`
+          columnRefs.current.get(key)?.focus()
         } else if (e.shiftKey && columnIndex > 0) {
-          e.preventDefault();
-          const parentColumn = columns[columnIndex - 1]; // Use columns parameter
-          const parentValue = expandedPath[columnIndex - 1];
-          const parentIndex = parentColumn.findIndex(
-            (opt) => opt.value === parentValue
-          );
-          setFocusedColumn(columnIndex - 1);
-          setFocusedIndex(parentIndex >= 0 ? parentIndex : 0);
-          const key = `${columnIndex - 1}-${
-            parentIndex >= 0 ? parentIndex : 0
-          }`;
-          columnRefs.current.get(key)?.focus();
+          e.preventDefault()
+          const parentColumn = columns[columnIndex - 1] // Use columns parameter
+          const parentValue = expandedPath[columnIndex - 1]
+          const parentIndex = parentColumn.findIndex((opt) => opt.value === parentValue)
+          setFocusedColumn(columnIndex - 1)
+          setFocusedIndex(parentIndex >= 0 ? parentIndex : 0)
+          const key = `${columnIndex - 1}-${parentIndex >= 0 ? parentIndex : 0}`
+          columnRefs.current.get(key)?.focus()
         }
-        break;
+        break
     }
-  };
+  }
 
   const displayValue =
     displayLabels.length > 0
       ? displayRender
         ? displayRender(displayLabels, selectedOptions)
         : displayLabels.join(" / ")
-      : null;
+      : null
 
   const triggerElement = (
     <div
@@ -294,14 +273,12 @@ export function Cascader({
       )}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          if (!disabled) setOpen(!open);
+          e.preventDefault()
+          if (!disabled) setOpen(!open)
         }
       }}
     >
-      <span className="truncate flex-1 text-left font-normal">
-        {displayValue || placeholder}
-      </span>
+      <span className="truncate flex-1 text-left font-normal">{displayValue || placeholder}</span>
       <div className="flex items-center gap-1 shrink-0">
         {allowClear && displayValue && !disabled && (
           <X
@@ -313,9 +290,9 @@ export function Cascader({
         <ChevronDown className="h-4 w-4 opacity-50" aria-hidden="true" />
       </div>
     </div>
-  );
+  )
 
-  const columns = getColumns();
+  const columns = getColumns()
 
   const columnsContent = (
     <div
@@ -339,21 +316,20 @@ export function Cascader({
             )}
           >
             {column.map((option, itemIndex) => {
-              const isExpanded = expandedPath[columnIndex] === option.value;
-              const isSelected = selectedValue[columnIndex] === option.value;
-              const hasChildren = option.children && option.children.length > 0;
-              const isFocused =
-                focusedColumn === columnIndex && focusedIndex === itemIndex;
-              const refKey = `${columnIndex}-${itemIndex}`;
+              const isExpanded = expandedPath[columnIndex] === option.value
+              const isSelected = selectedValue[columnIndex] === option.value
+              const hasChildren = option.children && option.children.length > 0
+              const isFocused = focusedColumn === columnIndex && focusedIndex === itemIndex
+              const refKey = `${columnIndex}-${itemIndex}`
 
               return (
                 <div
                   key={option.value}
                   ref={(el) => {
                     if (el) {
-                      columnRefs.current.set(refKey, el);
+                      columnRefs.current.set(refKey, el)
                     } else {
-                      columnRefs.current.delete(refKey);
+                      columnRefs.current.delete(refKey)
                     }
                   }}
                   role="option"
@@ -370,53 +346,46 @@ export function Cascader({
                     option.disabled && "opacity-50 cursor-not-allowed"
                   )}
                   onClick={() => handleSelect(option, columnIndex)}
-                  onKeyDown={(e) =>
-                    handleKeyDown(e, option, columnIndex, itemIndex, columns)
-                  } // Pass columns
+                  onKeyDown={(e) => handleKeyDown(e, option, columnIndex, itemIndex, columns)} // Pass columns
                   onMouseEnter={() => {
                     if (expandTrigger === "hover" && hasChildren) {
-                      handleExpand(option, columnIndex);
+                      handleExpand(option, columnIndex)
                     }
                   }}
                   onFocus={() => {
-                    setFocusedColumn(columnIndex);
-                    setFocusedIndex(itemIndex);
+                    setFocusedColumn(columnIndex)
+                    setFocusedIndex(itemIndex)
                   }}
                 >
                   <span className="truncate">{option.label}</span>
                   {hasChildren && (
-                    <ChevronRight
-                      className="h-4 w-4 ml-2 shrink-0 opacity-50"
-                      aria-hidden="true"
-                    />
+                    <ChevronRight className="h-4 w-4 ml-2 shrink-0 opacity-50" aria-hidden="true" />
                   )}
                 </div>
-              );
+              )
             })}
           </div>
         )
       )}
     </div>
-  );
+  )
 
   const handleOpenChange = (newOpen: boolean) => {
-    setOpen(newOpen);
+    setOpen(newOpen)
     if (newOpen) {
       setExpandedPath(
-        selectedValue.slice(0, -1).length > 0
-          ? selectedValue.slice(0, -1)
-          : selectedValue
-      );
-      setFocusedColumn(0);
-      setFocusedIndex(0);
+        selectedValue.slice(0, -1).length > 0 ? selectedValue.slice(0, -1) : selectedValue
+      )
+      setFocusedColumn(0)
+      setFocusedIndex(0)
       setTimeout(() => {
-        const key = `0-0`;
-        columnRefs.current.get(key)?.focus();
-      }, 50);
+        const key = `0-0`
+        columnRefs.current.get(key)?.focus()
+      }, 50)
     } else {
-      setExpandedPath([]);
+      setExpandedPath([])
     }
-  };
+  }
 
   if (isMobile) {
     return (
@@ -426,14 +395,12 @@ export function Cascader({
         </DrawerTrigger>
         <DrawerContent className={cn("px-0", popupClassName)}>
           <DrawerHeader className="pb-2">
-            <DrawerTitle className="text-sm font-medium">
-              {placeholder}
-            </DrawerTitle>
+            <DrawerTitle className="text-sm font-medium">{placeholder}</DrawerTitle>
           </DrawerHeader>
           <div className="px-4 pb-6">{columnsContent}</div>
         </DrawerContent>
       </Drawer>
-    );
+    )
   }
 
   return (
@@ -441,12 +408,9 @@ export function Cascader({
       <PopoverTrigger asChild disabled={disabled}>
         {triggerElement}
       </PopoverTrigger>
-      <PopoverContent
-        className={cn("w-auto p-0", popupClassName)}
-        align="start"
-      >
+      <PopoverContent className={cn("w-auto p-0", popupClassName)} align="start">
         {columnsContent}
       </PopoverContent>
     </Popover>
-  );
+  )
 }

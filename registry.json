@@ -1,31 +1,25 @@
 {
-    "$schema": "https://ui.shadcn.com/schema/registry.json",
-    "name": "cascader",
-    "homepage": "https://github.com/Ademking/cascader-shadcn",
-    "items": [
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "cascader",
+  "homepage": "https://github.com/ixexel661/cascader-shadcn",
+  "items": [
+    {
+      "name": "cascader",
+      "type": "registry:component",
+      "title": "Cascader",
+      "description": "A cascading dropdown menu component for selecting hierarchical data like locations, categories, or organizational structures.",
+      "registryDependencies": ["popover", "drawer", "use-mobile"],
+      "dependencies": ["lucide-react"],
+      "files": [
         {
-            "name": "cascader",
-            "type": "registry:component",
-            "title": "Cascader",
-            "description": "A cascading dropdown menu component for selecting hierarchical data like locations, categories, or organizational structures.",
-            "registryDependencies": [
-                "popover",
-                "drawer",
-                "use-mobile"
-            ],
-            "dependencies": [
-                "lucide-react"
-            ],
-            "files": [
-                {
-                    "path": "src/components/ui/cascader.tsx",
-                    "type": "registry:component"
-                },
-                {
-                    "path": "src/hooks/use-mobile.tsx",
-                    "type": "registry:hook"
-                }
-            ]
+          "path": "src/components/ui/cascader.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/hooks/use-mobile.tsx",
+          "type": "registry:hook"
         }
-    ]
+      ]
+    }
+  ]
 }
